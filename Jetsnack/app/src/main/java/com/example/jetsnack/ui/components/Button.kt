@@ -33,6 +33,7 @@ import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
 import androidx.compose.foundation.style.Style
 import androidx.compose.foundation.style.rememberUpdatedStyleState
 import androidx.compose.foundation.style.styleable
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -77,13 +78,13 @@ fun Button(
                     role = Role.Button
                 },
             )
-            .styleable(styleState, JetsnackTheme.styles.buttonStyle, style)
             .clickable(
                 enabled = enabled,
                 onClick = onClick,
                 interactionSource = interactionSource,
                 indication = null,
-            ),
+            )
+            .styleable(styleState, JetsnackTheme.styles.buttonStyle, style),
         content = content,
         verticalAlignment = Alignment.CenterVertically,
     )
@@ -112,7 +113,7 @@ private fun ButtonPreview() {
                     enabled = true,
                     loadingState = loadingState,
                     style =  {
-                        width(130.dp)
+                        width(150.dp)
                         textAlign(TextAlign.Center)
                     }
                 ) {
