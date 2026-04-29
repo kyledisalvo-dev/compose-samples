@@ -51,8 +51,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.jetsnack.ui.utils.ellipticalGradient
 
-@Immutable
-data class Styles(
+object JetsnackStyles {
     val buttonStyle: Style = Style {
         shape(shapes.small)
         background(Brush.linearGradient(colors = colors.interactivePrimary))
@@ -133,17 +132,17 @@ data class Styles(
                 innerShadow(Shadow(color = Color.Transparent, offset = DpOffset(x = (0).dp, (0).dp), radius = 0.dp))
             }
         }
-    },
+    }
     val cardStyle: Style = Style {
         shape(shapes.medium)
         background(colors.uiBackground)
         contentColor(colors.textPrimary)
-    },
+    }
     val dividerStyle: Style = Style {
         background(colors.uiBorder.copy(alpha = 0.12f))
         height(1.dp)
         fillWidth()
-    },
+    }
     val gradientIconButtonStyle: Style = Style {
         shape(CircleShape)
         clip(true)
@@ -162,7 +161,7 @@ data class Styles(
                 )
             }
         }
-    },
+    }
     val filterChipStyle: Style = Style {
         shape(shapes.small)
         background(colors.uiBackground)
@@ -192,17 +191,17 @@ data class Styles(
                 innerShadow(Shadow(color = colors.brand, offset = DpOffset((-6).dp, (-8).dp), radius = 8.dp))
             }
         }
-    },
+    }
     val defaultTextStyle: Style = Style {
         // Left empty to allow inherited text properties (like from Button) to cascade.
         // The base material typography fallback is now handled by BasicText's `style` parameter.
-    },
+    }
     val surfaceStyle: Style = Style {
         shape(RectangleShape)
         background(colors.uiBackground)
         contentColor(colors.textSecondary)
         clip(true)
-    },
+    }
     val baseSnackCardStyle : Style = Style {
         textAlign(TextAlign.Center)
 
@@ -221,14 +220,14 @@ data class Styles(
                 scale(1.05f)
             }
         }
-    },
+    }
     val responsiveSnackCardStyle : Style = baseSnackCardStyle then Style {
         width(170.dp)
 
         if (mediaQuery { windowWidth > 500.dp }) {
             width(200.dp)
         }
-    },
+    }
     val highlightGlowCardStyle : Style = responsiveSnackCardStyle then Style {
         background(colors.brandLight)
         border(0.dp, colors.brandLight)
@@ -244,7 +243,7 @@ data class Styles(
                 innerShadow(Shadow(offset = DpOffset((-6).dp, (-2).dp), radius = 8.dp, color = colors.brand.copy(alpha = 0.5f)))
             }
         }
-    },
+    }
     val normalCardStyle : Style = baseSnackCardStyle then Style {
         background(Color.Transparent)
         width(100.dp)
@@ -253,13 +252,13 @@ data class Styles(
         pressed {
             background(colors.uiFloated.copy(alpha = 0.5f))
         }
-    },
+    }
     val plainCardStyle : Style = responsiveSnackCardStyle then Style {
         background(colors.cardHighlightBackground)
         clip(true)
         border(1.dp, colors.cardHighlightBorder)
     }
-)
+}
 
 fun StyleScope.adaptiveFontSize(fontSize: TextUnit) {
     var scaleFactor = when (LocalUiMediaScope.currentValue.viewingDistance) {

@@ -34,7 +34,7 @@ import com.example.jetsnack.ui.theme.JetsnackTheme.Companion.LocalJetsnackTheme
 
 @Composable
 fun JetsnackDivider(modifier: Modifier = Modifier, style: Style = Style) {
-    Box(modifier = modifier.styleable(null, LocalJetsnackTheme.current.styles.dividerStyle, style))
+    Box(modifier = modifier.styleable(null, JetsnackTheme.styles.dividerStyle, style))
 }
 
 @Preview("default", showBackground = true)
