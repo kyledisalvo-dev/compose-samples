@@ -24,6 +24,7 @@ import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
 import androidx.compose.foundation.style.MutableStyleState
 import androidx.compose.foundation.style.Style
 import androidx.compose.foundation.style.StyleScope
+import androidx.compose.foundation.style.StyleState
 import androidx.compose.foundation.style.StyleStateKey
 import androidx.compose.foundation.style.disabled
 import androidx.compose.foundation.style.fillWidth
@@ -40,6 +41,7 @@ import androidx.compose.ui.UiMediaScope.ViewingDistance
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.mediaQuery
@@ -57,7 +59,7 @@ object JetsnackStyles {
         background(Brush.linearGradient(colors = colors.interactivePrimary))
         contentColor(colors.textSecondary)
         minWidth(58.dp)
-        textMotion(TextMotion.Animated)
+
         if (mediaQuery {
                 pointerPrecision == UiMediaScope.PointerPrecision.Fine &&
                         keyboardKind == UiMediaScope.KeyboardKind.Physical
@@ -75,15 +77,50 @@ object JetsnackStyles {
             shape(shapes.small)
             textStyle(typography.labelLarge)
         }
+        textMotion(TextMotion.Animated)
         fontWeight(FontWeight.Bold)
-        dropShadow(Shadow(color = colors.brand, offset = DpOffset(x = 0.dp, y = 2.dp), radius = 6.dp))
-        innerShadow(Shadow(color = colors.brand.copy(alpha = 0.5f), offset = DpOffset(x = (0).dp, (0).dp), radius = 8.dp))
+        innerShadow(
+            Shadow(
+                color = colors.brand.copy(alpha = 0.5f),
+                offset = DpOffset(x = (0).dp, (0).dp),
+                radius = 8.dp,
+            ),
+        )
+        dropShadow(
+            Shadow(
+                color = colors.brand,
+                offset = DpOffset(x = 0.dp, y = 2.dp),
+                radius = 6.dp,
+            ),
+        )
         border(4.dp, Color.Transparent)
+
+        disabled {
+            animate(tween(1000)) {
+                background(colors.interactiveDisabled)
+                contentColor(colors.interactiveDisabledText)
+                // reset shadow
+                dropShadow(Shadow(color = Color.Transparent, offset = DpOffset(x = 0.dp, y = 0.dp), radius = 0.dp))
+                innerShadow(Shadow(color = Color.Transparent, offset = DpOffset(x = (0).dp, (0).dp), radius = 0.dp))
+            }
+        }
         hovered {
             animate(tween(1000)) {
                 background(colors.brandLight)
-                dropShadow(Shadow(color = colors.brand, offset = DpOffset(x = 0.dp, y = 2.dp), radius = 6.dp))
-                innerShadow(Shadow(color = colors.brand.copy(alpha = 0.5f), offset = DpOffset(x = (-6).dp, (-2).dp), radius = 8.dp))
+                dropShadow(
+                    Shadow(
+                        color = colors.brand,
+                        offset = DpOffset(x = 0.dp, y = 2.dp),
+                        radius = 6.dp,
+                    ),
+                )
+                innerShadow(
+                    Shadow(
+                        color = colors.brand.copy(alpha = 0.5f),
+                        offset = DpOffset(x = (-6).dp, (-2).dp),
+                        radius = 8.dp,
+                    ),
+                )
             }
         }
         focused {
@@ -93,7 +130,6 @@ object JetsnackStyles {
         }
         pressed {
             animate(tween(1000)) {
-                scale(1.1f)
                 background(colors.brand)
                 dropShadow(Shadow(color = colors.brand, offset = DpOffset(x = 0.dp, y = 0.dp), radius = 0.dp))
                 innerShadow(Shadow(color = colors.brand, offset = DpOffset(x = (0).dp, (0).dp), radius = 0.dp))
@@ -104,10 +140,9 @@ object JetsnackStyles {
                 }
             }
         }
-
         loading {
             animate(tween(1000)) {
-                background(colors.loadingBackground)
+                background(SolidColor(colors.loadingBackground))
                 // reset shadow
                 dropShadow(Shadow(color = colors.brand, offset = DpOffset(x = 0.dp, y = 0.dp), radius = 0.dp))
                 // apply purple inner shadow
@@ -116,22 +151,15 @@ object JetsnackStyles {
         }
         error {
             animate(tween(1000)) {
-                background(colors.error)
+                background(SolidColor(colors.error))
                 contentColor(colors.interactiveDisabled)
                 // reset shadow
                 dropShadow(Shadow(color = Color.Transparent, offset = DpOffset(x = 0.dp, y = 0.dp), radius = 0.dp))
                 innerShadow(Shadow(color = Color.Transparent, offset = DpOffset(x = (0).dp, (0).dp), radius = 0.dp))
             }
         }
-        disabled {
-            animate(tween(1000)) {
-                background(colors.interactiveDisabled)
-                contentColor(colors.interactiveDisabledText)
-                // reset shadow
-                dropShadow(Shadow(color = Color.Transparent, offset = DpOffset(x = 0.dp, y = 0.dp), radius = 0.dp))
-                innerShadow(Shadow(color = Color.Transparent, offset = DpOffset(x = (0).dp, (0).dp), radius = 0.dp))
-            }
-        }
+
+
     }
     val cardStyle: Style = Style {
         shape(shapes.medium)
@@ -202,7 +230,7 @@ object JetsnackStyles {
         contentColor(colors.textSecondary)
         clip(true)
     }
-    val baseSnackCardStyle : Style = Style {
+    val baseSnackCardStyle: Style = Style {
         textAlign(TextAlign.Center)
 
         hovered {
@@ -221,14 +249,14 @@ object JetsnackStyles {
             }
         }
     }
-    val responsiveSnackCardStyle : Style = baseSnackCardStyle then Style {
+    val responsiveSnackCardStyle: Style = baseSnackCardStyle then Style {
         width(170.dp)
 
         if (mediaQuery { windowWidth > 500.dp }) {
             width(200.dp)
         }
     }
-    val highlightGlowCardStyle : Style = responsiveSnackCardStyle then Style {
+    val highlightGlowCardStyle: Style = responsiveSnackCardStyle then Style {
         background(colors.brandLight)
         border(0.dp, colors.brandLight)
         hovered {
@@ -244,7 +272,7 @@ object JetsnackStyles {
             }
         }
     }
-    val normalCardStyle : Style = baseSnackCardStyle then Style {
+    val normalCardStyle: Style = baseSnackCardStyle then Style {
         background(Color.Transparent)
         width(100.dp)
         contentPadding(2.dp)
@@ -253,7 +281,7 @@ object JetsnackStyles {
             background(colors.uiFloated.copy(alpha = 0.5f))
         }
     }
-    val plainCardStyle : Style = responsiveSnackCardStyle then Style {
+    val plainCardStyle: Style = responsiveSnackCardStyle then Style {
         background(colors.cardHighlightBackground)
         clip(true)
         border(1.dp, colors.cardHighlightBorder)
@@ -287,6 +315,9 @@ enum class LoadingState {
 
 val loadingStateKey = StyleStateKey(LoadingState.Loaded)
 
+val StyleState.loadingState
+    get() = this[loadingStateKey]
+
 var MutableStyleState.loadingState
     get() = this[loadingStateKey]
     set(value) {
@@ -297,10 +328,22 @@ fun StyleScope.loading(value: Style) {
     state(loadingStateKey, value, { key, state -> state[key] == LoadingState.Loading })
 }
 
+fun StyleScope.loading(block: StyleScope.() -> Unit) {
+    loading(Style(block))
+}
+
 fun StyleScope.loaded(value: Style) {
     state(loadingStateKey, value, { key, state -> state[key] == LoadingState.Loaded })
 }
 
+fun StyleScope.loaded(block: StyleScope.() -> Unit) {
+    loaded(Style(block))
+}
+
 fun StyleScope.error(value: Style) {
     state(loadingStateKey, value, { key, state -> state[key] == LoadingState.Error })
+}
+
+fun StyleScope.error(block: StyleScope.() -> Unit) {
+    error(Style(block))
 }

@@ -19,6 +19,11 @@
 package com.example.jetsnack.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.HoverInteraction
@@ -28,12 +33,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
 import androidx.compose.foundation.style.Style
 import androidx.compose.foundation.style.rememberUpdatedStyleState
 import androidx.compose.foundation.style.styleable
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +54,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -73,6 +79,7 @@ fun Button(
     }
     Row(
         modifier = modifier
+            .padding(8.dp)
             .semantics(
                 properties = {
                     role = Role.Button
@@ -90,14 +97,12 @@ fun Button(
     )
 }
 
-@Preview
-@Preview("dark theme", "rectangle", uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "light theme", "mobile")
+@Preview("dark theme", "mobile", uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun ButtonPreview() {
+private fun ButtonMobilePreview() {
     JetsnackTheme {
-        // Previews are by default focused, to ensure accuracy, focus a box first
         Box(modifier = Modifier.padding(32.dp)) {
-            Box(Modifier.focusTarget())
             UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Virtual, UiMediaScope.PointerPrecision.Blunt) {
                 var loadingState by remember {
                     mutableStateOf(LoadingState.Loaded)
@@ -112,29 +117,57 @@ private fun ButtonPreview() {
                     },
                     enabled = true,
                     loadingState = loadingState,
-                    style =  {
-                        width(150.dp)
-                        textAlign(TextAlign.Center)
+                    style = {
+                        fontWeight(FontWeight.Bold)
                     }
                 ) {
-                    val text = when (loadingState) {
-                        LoadingState.Loading -> "Loading..."
-                        LoadingState.Error -> "Error"
-                        LoadingState.Loaded -> "Add to cart"
+                    AnimatedContent(loadingState, modifier = Modifier.wrapContentWidth(),
+                        transitionSpec = {
+                            fadeIn(tween(3000)) togetherWith fadeOut(tween(3000))
+                        }) { targetState ->
+                        val text = when (targetState) {
+                            LoadingState.Loading -> "Loading..."
+                            LoadingState.Error -> "Error"
+                            LoadingState.Loaded -> "Add to cart"
+                        }
+                        Text(text = text)
                     }
-                    Text(text = text)
                 }
             }
         }
     }
 }
+@Preview(name = "light theme", group = "desktop")
+@Preview("dark theme", "desktop", uiMode = UI_MODE_NIGHT_YES)
+@Preview("large font", "desktop", fontScale = 2f)
+@Composable
+private fun ButtonDesktopPreview() {
+    UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Physical, UiMediaScope.PointerPrecision.Fine) {
+        Button(
+            onClick = {},
+        ) {
+            Text(text = "Add to cart")
+        }
+    }
+}
 
+@Preview(group = "desktop")
+@Composable
+private fun ButtonDesktopPreviewDisabled() {
+    UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Physical, UiMediaScope.PointerPrecision.Fine) {
+        Button(
+            onClick = {},
+            enabled = false,
+        ) {
+            Text(text = "Add to cart")
+        }
+    }
+}
 @Preview
 @Preview("dark theme", "rectangle", uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun ButtonPreviewLoading() {
     JetsnackTheme {
-        Box(Modifier.focusTarget())
         UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Virtual, UiMediaScope.PointerPrecision.Blunt) {
             Button(
                 onClick = {},
@@ -146,6 +179,7 @@ private fun ButtonPreviewLoading() {
         }
     }
 }
+
 
 @Preview
 @Preview("dark theme", "rectangle", uiMode = UI_MODE_NIGHT_YES)
@@ -187,8 +221,6 @@ private fun ButtonPreviewDisabled() {
 @Composable
 private fun ButtonPreviewPressed() {
     UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Virtual, UiMediaScope.PointerPrecision.Blunt) {
-        // Previews are by default focused, to ensure accuracy, focus a box first
-        Box(Modifier.focusTarget())
         val interactionSource = remember { MutableInteractionSource() }
         LaunchedEffect(interactionSource) {
             interactionSource.emit(PressInteraction.Press(Offset.Zero))
@@ -207,8 +239,6 @@ private fun ButtonPreviewPressed() {
 @Composable
 private fun ButtonPreviewHovered() {
     UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Virtual, UiMediaScope.PointerPrecision.Blunt) {
-        // Previews are by default focused, to ensure accuracy, focus a box first
-        Box(Modifier.focusTarget())
         val interactionSource = remember { MutableInteractionSource() }
         LaunchedEffect(interactionSource) {
             interactionSource.emit(HoverInteraction.Enter())
@@ -216,6 +246,28 @@ private fun ButtonPreviewHovered() {
         Button(
             onClick = {},
             interactionSource = interactionSource,
+        ) {
+            Text(text = "Add to cart")
+        }
+    }
+}
+
+
+
+
+
+
+@Preview("default", "rectangle")
+@Preview("dark theme", "rectangle", uiMode = UI_MODE_NIGHT_YES)
+@Preview("large font", "rectangle", fontScale = 2f)
+@Composable
+private fun RectangleButtonPreview() {
+    UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Virtual, UiMediaScope.PointerPrecision.Blunt) {
+        Button(
+            onClick = {},
+            style = {
+                shape(RoundedCornerShape(4.dp))
+            },
         ) {
             Text(text = "Add to cart")
         }
@@ -284,8 +336,6 @@ private fun ButtonPreviewPressedFocused() {
 @Composable
 private fun ButtonPreviewPressedHovered() {
     UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Virtual, UiMediaScope.PointerPrecision.Blunt) {
-        // Previews are by default focused, to ensure accuracy, focus a box first
-        Box(Modifier.focusTarget())
         val interactionSource = remember { MutableInteractionSource() }
         LaunchedEffect(interactionSource) {
             interactionSource.emit(PressInteraction.Press(Offset.Zero))
@@ -294,54 +344,6 @@ private fun ButtonPreviewPressedHovered() {
         Button(
             onClick = {},
             interactionSource = interactionSource,
-        ) {
-            Text(text = "Add to cart")
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun ButtonDesktopPreview() {
-    UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Physical, UiMediaScope.PointerPrecision.Fine) {
-        // Previews are by default focused, to ensure accuracy, focus a box first
-        Box(Modifier.focusTarget())
-        Button(
-            onClick = {},
-        ) {
-            Text(text = "Add to cart")
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun ButtonDesktopPreviewDisabled() {
-    UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Physical, UiMediaScope.PointerPrecision.Fine) {
-        // Previews are by default focused, to ensure accuracy, focus a box first
-        Box(Modifier.focusTarget())
-        Button(
-            onClick = {},
-            enabled = false,
-        ) {
-            Text(text = "Add to cart")
-        }
-    }
-}
-
-@Preview("default", "rectangle")
-@Preview("dark theme", "rectangle", uiMode = UI_MODE_NIGHT_YES)
-@Preview("large font", "rectangle", fontScale = 2f)
-@Composable
-private fun RectangleButtonPreview() {
-    UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Virtual, UiMediaScope.PointerPrecision.Blunt) {
-        // Previews are by default focused, to ensure accuracy, focus a box first
-        Box(Modifier.focusTarget())
-        Button(
-            onClick = {},
-            style = {
-                shape(RoundedCornerShape(4.dp))
-            },
         ) {
             Text(text = "Add to cart")
         }
