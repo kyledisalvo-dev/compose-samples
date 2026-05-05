@@ -59,6 +59,7 @@ object JetsnackStyles {
         background(Brush.linearGradient(colors = colors.interactivePrimary))
         contentColor(colors.textSecondary)
         minWidth(58.dp)
+        width(150.dp)
 
         if (mediaQuery {
                 pointerPrecision == UiMediaScope.PointerPrecision.Fine &&
@@ -96,7 +97,7 @@ object JetsnackStyles {
         border(4.dp, Color.Transparent)
 
         disabled {
-            animate(tween(1000)) {
+            animate(tween(500)) {
                 background(colors.interactiveDisabled)
                 contentColor(colors.interactiveDisabledText)
                 // reset shadow
@@ -105,7 +106,7 @@ object JetsnackStyles {
             }
         }
         hovered {
-            animate(tween(1000)) {
+            animate(tween(500)) {
                 background(colors.brandLight)
                 dropShadow(
                     Shadow(
@@ -124,24 +125,25 @@ object JetsnackStyles {
             }
         }
         focused {
-            animate(tween(1000)) {
+            animate(tween(500)) {
                 border(4.dp, colors.brand)
             }
         }
         pressed {
-            animate(tween(1000)) {
+            animate(tween(500)) {
                 background(colors.brand)
+                scale(1.1f)
                 dropShadow(Shadow(color = colors.brand, offset = DpOffset(x = 0.dp, y = 0.dp), radius = 0.dp))
                 innerShadow(Shadow(color = colors.brand, offset = DpOffset(x = (0).dp, (0).dp), radius = 0.dp))
             }
             focused {
-                animate(tween(1000)) {
+                animate(tween(500)) {
                     border(4.dp, colors.brand)
                 }
             }
         }
         loading {
-            animate(tween(1000)) {
+            animate(tween(500)) {
                 background(SolidColor(colors.loadingBackground))
                 // reset shadow
                 dropShadow(Shadow(color = colors.brand, offset = DpOffset(x = 0.dp, y = 0.dp), radius = 0.dp))
@@ -150,7 +152,7 @@ object JetsnackStyles {
             }
         }
         error {
-            animate(tween(1000)) {
+            animate(tween(500)) {
                 background(SolidColor(colors.error))
                 contentColor(colors.interactiveDisabled)
                 // reset shadow
