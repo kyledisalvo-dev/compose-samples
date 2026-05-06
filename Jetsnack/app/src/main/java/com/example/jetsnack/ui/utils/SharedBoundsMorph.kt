@@ -72,7 +72,7 @@ fun Modifier.sharedBoundsRevealWithShapeMorph(
     sharedContentState: SharedTransitionScope.SharedContentState,
     sharedTransitionScope: SharedTransitionScope? = LocalSharedTransitionScope.current,
     animatedVisibilityScope: AnimatedVisibilityScope? = LocalNavAnimatedVisibilityScope.current,
-    boundsTransform: BoundsTransform = { tween(600) },
+    boundsTransform: BoundsTransform = BoundsTransform { _, _ -> tween(600) },
     resizeMode: SharedTransitionScope.ResizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
     restingShape: RoundedPolygon = RoundedPolygon.rectangle().normalized(),
     targetShape: RoundedPolygon = RoundedPolygon.circle().normalized(),

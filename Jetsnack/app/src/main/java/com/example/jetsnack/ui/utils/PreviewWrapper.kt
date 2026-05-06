@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalMediaQueryApi::class, ExperimentalComposeUiApi::class)
+@file:OptIn(
+    ExperimentalMediaQueryApi::class,
+    ExperimentalComposeUiApi::class,
+    ExperimentalFoundationApi::class
+)
 
 package com.example.jetsnack.ui.utils
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.foundation.ComposeFoundationFlags
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -35,6 +41,7 @@ import com.example.jetsnack.ui.theme.JetsnackTheme
 
 @Composable
 fun JetsnackThemeWrapper(content: @Composable () -> Unit) {
+    ComposeFoundationFlags.isInheritedTextStyleEnabled = true
     JetsnackTheme {
         SharedTransitionLayout {
             AnimatedVisibility(true) {
@@ -54,7 +61,7 @@ fun UiMediaScopeWrapper(
     pointerPrecision: UiMediaScope.PointerPrecision = UiMediaScope.PointerPrecision.Blunt,
     content: @Composable () -> Unit,
 ) {
-
+    ComposeFoundationFlags.isInheritedTextStyleEnabled = true
     ComposeUiFlags.isMediaQueryIntegrationEnabled = true
     BoxWithConstraints {
         val uiMediaScope = object : UiMediaScope {

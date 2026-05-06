@@ -59,7 +59,6 @@ object JetsnackStyles {
         background(Brush.linearGradient(colors = colors.interactivePrimary))
         contentColor(colors.textSecondary)
         minWidth(58.dp)
-        width(150.dp)
 
         if (mediaQuery {
                 pointerPrecision == UiMediaScope.PointerPrecision.Fine &&
