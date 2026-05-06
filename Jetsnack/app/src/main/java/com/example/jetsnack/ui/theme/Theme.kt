@@ -139,7 +139,6 @@ fun ProvideJetsnackColors(colors: JetsnackColors, content: @Composable () -> Uni
 
 private val LocalJetsnackColors = staticCompositionLocalOf<JetsnackColors> {
     error("No JetsnackColorPalette provided")
-}
 
 /**
  * A Material [Colors] implementation which sets all colors to [debugColor] to discourage usage of
