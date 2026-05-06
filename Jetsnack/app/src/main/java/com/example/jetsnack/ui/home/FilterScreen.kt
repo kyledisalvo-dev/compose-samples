@@ -269,10 +269,9 @@ fun MaxCalories(sliderPosition: Float, onValueChanged: (Float) -> Unit) {
 
 @Composable
 fun FilterTitle(text: String) {
-) {
     Text(
         text = text,
-        style = MaterialTheme.typography.titleLarg        style = MaterialTheme.typography.titleLarge,
+        style = MaterialTheme.typography.titleLarge,
         color = JetsnackTheme.colors.brand,
         modifier = Modifier.padding(bottom = 8.dp),
     )
