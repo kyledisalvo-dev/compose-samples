@@ -86,7 +86,11 @@ private fun Feed(
                     sharedTransitionScope = this@SharedTransitionLayout,
                     onSnackClick = onSnackClick,
                 )
-                DestinationBar()
+                val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+                val isExpanded = configuration.screenWidthDp > 600
+                if (!isExpanded) {
+                    DestinationBar()
+                }
                 AnimatedVisibility(filtersVisible, enter = fadeIn(), exit = fadeOut()) {
                     FilterScreen(
                         animatedVisibilityScope = this@AnimatedVisibility,

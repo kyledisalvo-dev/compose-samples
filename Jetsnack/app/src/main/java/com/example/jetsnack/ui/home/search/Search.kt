@@ -50,6 +50,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.unit.dp
 import com.example.jetsnack.R
 import com.example.jetsnack.model.Filter
@@ -63,41 +64,43 @@ import com.example.jetsnack.ui.components.JetsnackSurface
 import com.example.jetsnack.ui.theme.JetsnackTheme
 
 @Composable
-fun Search(onSnackClick: (Long, String) -> Unit, modifier: Modifier = Modifier, state: SearchState = rememberSearchState()) {
+fun Search(
+    onSnackClick: (Long, String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SearchViewModel = viewModel()
+) {
     JetsnackSurface(modifier = modifier.fillMaxSize()) {
         Column {
             Spacer(modifier = Modifier.statusBarsPadding())
             SearchBar(
-                query = state.query,
-                onQueryChange = { state.query = it },
-                searchFocused = state.focused,
-                onSearchFocusChange = { state.focused = it },
-                onClearQuery = { state.query = TextFieldValue("") },
-                searching = state.searching,
+                query = viewModel.query,
+                onQueryChange = { viewModel.query = it },
+                searchFocused = viewModel.focused,
+                onSearchFocusChange = { viewModel.focused = it },
+                onClearQuery = { viewModel.query = TextFieldValue("") },
+                searching = viewModel.searching,
             )
             JetsnackDivider()
 
-            LaunchedEffect(state.query.text) {
-                state.searching = true
-                state.searchResults = SearchRepo.search(state.query.text)
-                state.searching = false
+            LaunchedEffect(viewModel.query.text) {
+                viewModel.performSearch()
             }
-            when (state.searchDisplay) {
-                SearchDisplay.Categories -> SearchCategories(state.categories)
+            when (viewModel.searchDisplay) {
+                SearchDisplay.Categories -> SearchCategories(viewModel.categories)
 
                 SearchDisplay.Suggestions -> SearchSuggestions(
-                    suggestions = state.suggestions,
+                    suggestions = viewModel.suggestions,
                     onSuggestionSelect = { suggestion ->
-                        state.query = TextFieldValue(suggestion)
+                        viewModel.query = TextFieldValue(suggestion)
                     },
                 )
 
                 SearchDisplay.Results -> SearchResults(
-                    state.searchResults,
+                    viewModel.searchResults,
                     onSnackClick,
                 )
 
-                SearchDisplay.NoResults -> NoResults(state.query.text)
+                SearchDisplay.NoResults -> NoResults(viewModel.query.text)
             }
         }
     }
@@ -110,54 +113,7 @@ enum class SearchDisplay {
     NoResults,
 }
 
-@Composable
-private fun rememberSearchState(
-    query: TextFieldValue = TextFieldValue(""),
-    focused: Boolean = false,
-    searching: Boolean = false,
-    categories: List<SearchCategoryCollection> = SearchRepo.getCategories(),
-    suggestions: List<SearchSuggestionGroup> = SearchRepo.getSuggestions(),
-    filters: List<Filter> = SnackRepo.getFilters(),
-    searchResults: List<Snack> = emptyList(),
-): SearchState {
-    return remember {
-        SearchState(
-            query = query,
-            focused = focused,
-            searching = searching,
-            categories = categories,
-            suggestions = suggestions,
-            filters = filters,
-            searchResults = searchResults,
-        )
-    }
-}
 
-@Stable
-class SearchState(
-    query: TextFieldValue,
-    focused: Boolean,
-    searching: Boolean,
-    categories: List<SearchCategoryCollection>,
-    suggestions: List<SearchSuggestionGroup>,
-    filters: List<Filter>,
-    searchResults: List<Snack>,
-) {
-    var query by mutableStateOf(query)
-    var focused by mutableStateOf(focused)
-    var searching by mutableStateOf(searching)
-    var categories by mutableStateOf(categories)
-    var suggestions by mutableStateOf(suggestions)
-    var filters by mutableStateOf(filters)
-    var searchResults by mutableStateOf(searchResults)
-    val searchDisplay: SearchDisplay
-        get() = when {
-            !focused && query.text.isEmpty() -> SearchDisplay.Categories
-            focused && query.text.isEmpty() -> SearchDisplay.Suggestions
-            searchResults.isEmpty() -> SearchDisplay.NoResults
-            else -> SearchDisplay.Results
-        }
-}
 
 @Composable
 private fun SearchBar(

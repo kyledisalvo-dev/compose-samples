@@ -81,7 +81,7 @@ fun FilterBar(
                             ),
                     ) {
                         Icon(
-                            painterResource(R.drawable.ic_filter_list),
+                            painterResource(R.drawable.ic_filter_alt),
                             tint = JetsnackTheme.colors.brand,
                             contentDescription = stringResource(R.string.label_filters),
                             modifier = Modifier.diagonalGradientBorder(

@@ -29,6 +29,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.SnackbarHost
@@ -37,6 +38,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
@@ -57,7 +59,7 @@ import com.example.jetsnack.ui.snackdetail.nonSpatialExpressiveSpring
 import com.example.jetsnack.ui.snackdetail.spatialExpressiveSpring
 import com.example.jetsnack.ui.theme.JetsnackTheme
 
-@Preview
+@Preview(device=Devices.FOLDABLE)
 @Composable
 fun JetsnackApp() {
     JetsnackTheme {
@@ -114,6 +116,11 @@ fun MainContainer(modifier: Modifier = Modifier, onSnackSelected: (Long, String,
         ?: throw IllegalStateException("No SharedElementScope found")
     val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
         ?: throw IllegalStateException("No SharedElementScope found")
+        
+    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+    val isExpanded = configuration.screenWidthDp > 600
+    val selectedSnack = androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf<Pair<Long, String>?>(null) }
+
     JetsnackScaffold(
         bottomBar = {
             with(animatedVisibilityScope) {
@@ -152,16 +159,48 @@ fun MainContainer(modifier: Modifier = Modifier, onSnackSelected: (Long, String,
         },
         snackBarHostState = jetsnackScaffoldState.snackBarHostState,
     ) { padding ->
-        NavHost(
-            navController = nestedNavController.navController,
-            startDestination = HomeSections.FEED.route,
-        ) {
-            addHomeGraph(
-                onSnackSelected = onSnackSelected,
+        if (isExpanded) {
+            androidx.compose.foundation.layout.Row(
                 modifier = Modifier
+                    .fillMaxSize()
                     .padding(padding)
-                    .consumeWindowInsets(padding),
-            )
+                    .consumeWindowInsets(padding)
+            ) {
+                androidx.compose.foundation.layout.Box(modifier = Modifier.weight(1f)) {
+                    NavHost(
+                        navController = nestedNavController.navController,
+                        startDestination = HomeSections.FEED.route,
+                    ) {
+                        addHomeGraph(
+                            onSnackSelected = { id, origin, _ ->
+                                selectedSnack.value = id to origin
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
+                if (selectedSnack.value != null) {
+                    androidx.compose.foundation.layout.Box(modifier = Modifier.weight(1f)) {
+                        SnackDetail(
+                            snackId = selectedSnack.value!!.first,
+                            origin = selectedSnack.value!!.second,
+                            upPress = { selectedSnack.value = null }
+                        )
+                    }
+                }
+            }
+        } else {
+            NavHost(
+                navController = nestedNavController.navController,
+                startDestination = HomeSections.FEED.route,
+            ) {
+                addHomeGraph(
+                    onSnackSelected = onSnackSelected,
+                    modifier = Modifier
+                        .padding(padding)
+                        .consumeWindowInsets(padding),
+                )
+            }
         }
     }
 }
