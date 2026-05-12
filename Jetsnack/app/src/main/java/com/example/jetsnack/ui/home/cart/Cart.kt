@@ -455,7 +455,9 @@ private fun CheckoutBar(modifier: Modifier = Modifier) {
                     .padding(horizontal = 12.dp, vertical = 8.dp)
                     .weight(1f),
                 style = Style {
-                    border(2.dp, Color.Magenta)
+                    borderColor(Color.Magenta)
+                    borderWidth(2.dp)
+                    background(Color.Gray)
                 }
             ) {
                 Text(

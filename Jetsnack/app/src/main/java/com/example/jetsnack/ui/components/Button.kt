@@ -25,7 +25,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.style.MutableStyleState
 import androidx.compose.foundation.style.Style
+import androidx.compose.foundation.style.styleable
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
@@ -49,6 +51,8 @@ fun JetsnackButton(
     style: Style = Style,
     content: @Composable RowScope.() -> Unit,
 ) {
+    val styleState = remember(interactionSource) { MutableStyleState(interactionSource) }
+    styleState.isEnabled = enabled
     JetsnackSurface(
         color = Color.Transparent,
         modifier = modifier
@@ -58,7 +62,8 @@ fun JetsnackButton(
                 role = Role.Button,
                 interactionSource = interactionSource,
                 indication = null,
-            ),
+            )
+            .styleable(styleState, style),
     ) {
         ProvideTextStyle(
             value = MaterialTheme.typography.labelLarge,
