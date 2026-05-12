@@ -43,6 +43,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.style.Style
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +54,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.LastBaseline
@@ -449,10 +451,12 @@ private fun CheckoutBar(modifier: Modifier = Modifier) {
             Spacer(Modifier.weight(1f))
             JetsnackButton(
                 onClick = { /* todo */ },
-                shape = RectangleShape,
                 modifier = Modifier
                     .padding(horizontal = 12.dp, vertical = 8.dp)
                     .weight(1f),
+                style = Style {
+                    border(2.dp, Color.Magenta)
+                }
             ) {
                 Text(
                     text = stringResource(id = R.string.cart_checkout),
