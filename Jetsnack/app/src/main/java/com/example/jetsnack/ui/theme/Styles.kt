@@ -20,17 +20,24 @@ package com.example.jetsnack.ui.theme
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.style.CustomStyle
 import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
 import androidx.compose.foundation.style.MutableStyleState
 import androidx.compose.foundation.style.Style
 import androidx.compose.foundation.style.StyleScope
 import androidx.compose.foundation.style.StyleState
 import androidx.compose.foundation.style.StyleStateKey
+import androidx.compose.foundation.style.animate
+import androidx.compose.foundation.style.border
+import androidx.compose.foundation.style.contentPadding
+import androidx.compose.foundation.style.contentPaddingHorizontal
+import androidx.compose.foundation.style.contentPaddingVertical
 import androidx.compose.foundation.style.disabled
 import androidx.compose.foundation.style.fillWidth
 import androidx.compose.foundation.style.focused
 import androidx.compose.foundation.style.hovered
 import androidx.compose.foundation.style.pressed
+import androidx.compose.foundation.style.scale
 import androidx.compose.foundation.style.selected
 import androidx.compose.foundation.style.then
 import androidx.compose.runtime.Immutable
@@ -54,7 +61,7 @@ import androidx.compose.ui.unit.dp
 import com.example.jetsnack.ui.utils.ellipticalGradient
 
 object JetsnackStyles {
-    val buttonStyle: Style = Style {
+    val buttonStyle: LoadingStyle = LoadingStyle {
         shape(shapes.small)
         background(Brush.linearGradient(colors = colors.interactivePrimary))
         contentColor(colors.textSecondary)
@@ -325,26 +332,28 @@ var MutableStyleState.loadingState
         this[loadingStateKey] = value
     }
 
-fun StyleScope.loading(value: Style) {
-    state(loadingStateKey, value, { key, state -> state[key] == LoadingState.Loading })
+interface LoadingStyleScope : StyleScope
+
+fun interface LoadingStyle : CustomStyle<LoadingStyleScope> {
+    companion object : LoadingStyle {
+        override fun LoadingStyleScope.applyStyle() {
+            // intentionally empty
+        }
+        fun LoadingStyle.toStyle(): Style = Style {
+            val scope = object : StyleScope by this, LoadingStyleScope {}
+            with(scope) { applyStyle() }
+        }
+    }
+}
+fun LoadingStyleScope.loading(block: () -> Unit) {
+    state(loadingStateKey, block, { key, state -> state[key] == LoadingState.Loading })
 }
 
-fun StyleScope.loading(block: StyleScope.() -> Unit) {
-    loading(Style(block))
+fun LoadingStyleScope.loaded(block: () -> Unit) {
+    state(loadingStateKey, block, { key, state -> state[key] == LoadingState.Loaded })
 }
 
-fun StyleScope.loaded(value: Style) {
-    state(loadingStateKey, value, { key, state -> state[key] == LoadingState.Loaded })
+fun LoadingStyleScope.error(block: () -> Unit) {
+    state(loadingStateKey, block, { key, state -> state[key] == LoadingState.Error })
 }
 
-fun StyleScope.loaded(block: StyleScope.() -> Unit) {
-    loaded(Style(block))
-}
-
-fun StyleScope.error(value: Style) {
-    state(loadingStateKey, value, { key, state -> state[key] == LoadingState.Error })
-}
-
-fun StyleScope.error(block: StyleScope.() -> Unit) {
-    error(Style(block))
-}

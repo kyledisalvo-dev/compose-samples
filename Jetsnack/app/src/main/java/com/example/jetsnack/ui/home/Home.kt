@@ -41,6 +41,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.style.border
+import androidx.compose.foundation.style.contentPaddingHorizontal
+import androidx.compose.foundation.style.externalPadding
 import androidx.compose.foundation.style.styleable
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable

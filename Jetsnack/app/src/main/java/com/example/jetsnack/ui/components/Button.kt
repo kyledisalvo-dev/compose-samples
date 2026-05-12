@@ -60,6 +60,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetsnack.ui.theme.JetsnackTheme
 import com.example.jetsnack.ui.theme.LoadingState
+import com.example.jetsnack.ui.theme.LoadingStyle
+import com.example.jetsnack.ui.theme.LoadingStyle.Companion.toStyle
 import com.example.jetsnack.ui.theme.loadingState
 import com.example.jetsnack.ui.utils.UiMediaScopeWrapper
 
@@ -67,7 +69,7 @@ import com.example.jetsnack.ui.utils.UiMediaScopeWrapper
 fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    style: Style = Style,
+    style: LoadingStyle = LoadingStyle,
     enabled: Boolean = true,
     loadingState: LoadingState = LoadingState.Loaded,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -91,7 +93,7 @@ fun Button(
                 interactionSource = interactionSource,
                 indication = null,
             )
-            .styleable(styleState, JetsnackTheme.styles.buttonStyle, style),
+            .styleable(styleState, JetsnackTheme.styles.buttonStyle.toStyle(), style.toStyle()),
         content = content,
         verticalAlignment = Alignment.CenterVertically,
     )
