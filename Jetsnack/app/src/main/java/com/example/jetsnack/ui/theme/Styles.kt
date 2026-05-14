@@ -40,7 +40,6 @@ import androidx.compose.foundation.style.pressed
 import androidx.compose.foundation.style.scale
 import androidx.compose.foundation.style.selected
 import androidx.compose.foundation.style.then
-import androidx.compose.runtime.Immutable
 import androidx.compose.ui.ExperimentalMediaQueryApi
 import androidx.compose.ui.LocalUiMediaScope
 import androidx.compose.ui.UiMediaScope
@@ -150,11 +149,28 @@ object JetsnackStyles {
         }
         loading {
             animate(tween(500)) {
+                contentColor(colors.loadingContent)
                 background(SolidColor(colors.loadingBackground))
-                // reset shadow
-                dropShadow(Shadow(color = colors.brand, offset = DpOffset(x = 0.dp, y = 0.dp), radius = 0.dp))
                 // apply purple inner shadow
                 innerShadow(Shadow(color = colors.brand, offset = DpOffset(x = (-6).dp, (-2).dp), radius = 8.dp))
+            }
+            hovered {
+                animate(tween(500)) {
+                    dropShadow(
+                        Shadow(
+                            color = colors.brand,
+                            offset = DpOffset(x = 0.dp, y = 2.dp),
+                            radius = 6.dp,
+                        ),
+                    )
+                    innerShadow(
+                        Shadow(
+                            color = colors.brand.copy(alpha = 0.5f),
+                            offset = DpOffset(x = (-6).dp, (-2).dp),
+                            radius = 8.dp,
+                        ),
+                    )
+                }
             }
         }
         error {
@@ -339,12 +355,14 @@ fun interface LoadingStyle : CustomStyle<LoadingStyleScope> {
         override fun LoadingStyleScope.applyStyle() {
             // intentionally empty
         }
+
         fun LoadingStyle.toStyle(): Style = Style {
             val scope = object : StyleScope by this, LoadingStyleScope {}
             with(scope) { applyStyle() }
         }
     }
 }
+
 fun LoadingStyleScope.loading(block: () -> Unit) {
     state(loadingStateKey, block, { key, state -> state[key] == LoadingState.Loading })
 }

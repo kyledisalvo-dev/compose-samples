@@ -20,6 +20,7 @@ package com.example.jetsnack.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -36,7 +37,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
-import androidx.compose.foundation.style.Style
+import androidx.compose.foundation.style.fillWidth
 import androidx.compose.foundation.style.rememberUpdatedStyleState
 import androidx.compose.foundation.style.styleable
 import androidx.compose.runtime.Composable
@@ -54,7 +55,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -109,36 +109,58 @@ private fun ButtonMobilePreview() {
                 var loadingState by remember {
                     mutableStateOf(LoadingState.Loaded)
                 }
+                var enabled by remember {
+                    mutableStateOf(true)
+                }
+
                 Button(
                     onClick = {
                         loadingState = when (loadingState) {
                             LoadingState.Loaded -> LoadingState.Loading
                             LoadingState.Loading -> LoadingState.Error
-                            LoadingState.Error -> LoadingState.Loaded
+                            LoadingState.Error -> {
+                                LoadingState.Loaded
+                            }
                         }
                     },
-                    enabled = true,
+                    enabled = enabled,
                     loadingState = loadingState,
                     style = {
-                        fontWeight(FontWeight.Bold)
-                    }
+                        width(130.dp)
+                    },
                 ) {
-                    AnimatedContent(loadingState, modifier = Modifier.wrapContentWidth(),
+
+                    AnimatedContent(
+                        loadingState, modifier = Modifier.wrapContentWidth(),
                         transitionSpec = {
-                            fadeIn(tween(3000)) togetherWith fadeOut(tween(3000))
-                        }) { targetState ->
-                        val text = when (targetState) {
-                            LoadingState.Loading -> "Loading..."
-                            LoadingState.Error -> "Error"
-                            LoadingState.Loaded -> "Add to cart"
+                            fadeIn(tween(500)) +
+                                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Down) togetherWith
+                                    fadeOut(tween(500)) + slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Down)
+                        },
+                    ) { targetState ->
+                        val text = if (enabled) {
+                            when (targetState) {
+                                LoadingState.Loading -> "Loading..."
+                                LoadingState.Error -> "Error"
+                                LoadingState.Loaded -> "Add to cart"
+                            }
+                        } else {
+                            "Disabled"
                         }
-                        Text(text = text)
+                        Text(
+                            text = text,
+                            style = {
+                                fillWidth()
+                                textAlign(TextAlign.Center)
+                            },
+                        )
                     }
                 }
             }
         }
     }
 }
+
 @Preview(name = "light theme", group = "desktop")
 @Preview("dark theme", "desktop", uiMode = UI_MODE_NIGHT_YES)
 @Preview("large font", "desktop", fontScale = 2f)
@@ -165,6 +187,7 @@ private fun ButtonDesktopPreviewDisabled() {
         }
     }
 }
+
 @Preview
 @Preview("dark theme", "rectangle", uiMode = UI_MODE_NIGHT_YES)
 @Composable
@@ -253,10 +276,6 @@ private fun ButtonPreviewHovered() {
         }
     }
 }
-
-
-
-
 
 
 @Preview("default", "rectangle")

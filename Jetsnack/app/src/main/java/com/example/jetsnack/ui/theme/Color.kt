@@ -54,8 +54,10 @@ data class JetsnackColors(
     val cardHighlightBackground: Color,
     val cardHighlightBorder: Color,
     val loadingBackground: Color,
+    val loadingContent: Color,
     val isDark: Boolean,
 )
+
 /**
  * A Material [Colors] implementation which sets all colors to [debugColor] to discourage usage of
  * [MaterialTheme.colorScheme] in preference to [JetsnackTheme.colors].
@@ -195,6 +197,7 @@ internal val LightColorPalette = JetsnackColors(
     cardHighlightBackground = TeleportLight,
     cardHighlightBorder = StarburstLight,
     loadingBackground = StarburstLight,
+    loadingContent = SalamanderLight,
     isDark = false,
 )
 
@@ -223,5 +226,6 @@ internal val DarkColorPalette = JetsnackColors(
     cardHighlightBackground = TeleportDark,
     cardHighlightBorder = StarburstDark,
     loadingBackground = StarburstDark,
+    loadingContent = SalamanderDark,
     isDark = true,
 )
