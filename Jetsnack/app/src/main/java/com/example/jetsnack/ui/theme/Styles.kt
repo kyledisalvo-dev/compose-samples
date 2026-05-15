@@ -64,7 +64,7 @@ object JetsnackStyles {
         shape(shapes.small)
         background(Brush.linearGradient(colors = colors.interactivePrimary))
         contentColor(colors.textSecondary)
-        minWidth(58.dp)
+        minWidth(36.dp)
 
         if (mediaQuery {
                 pointerPrecision == UiMediaScope.PointerPrecision.Fine &&
@@ -74,12 +74,10 @@ object JetsnackStyles {
             contentPaddingVertical(4.dp)
             contentPaddingHorizontal(8.dp)
             shape(shapes.medium)
-            minHeight(32.dp)
             textStyle(typography.labelMedium)
         } else {
             contentPaddingVertical(8.dp)
             contentPaddingHorizontal(24.dp)
-            minHeight(40.dp)
             shape(shapes.small)
             textStyle(typography.labelLarge)
         }
@@ -221,6 +219,8 @@ object JetsnackStyles {
         border(2.dp, Brush.linearGradient(colors.interactiveSecondary))
         minHeight(32.dp)
         textStyle(typography.labelSmall)
+        dropShadow(Shadow(color = Color.Transparent, offset = DpOffset(0.dp, 0.dp), radius = 0.dp))
+        innerShadow(Shadow(color = Color.Transparent, offset = DpOffset(0.dp, 0.dp), radius = 0.dp))
         pressed {
             animate {
                 val gradient = Brush.ellipticalGradient(
@@ -235,13 +235,14 @@ object JetsnackStyles {
             }
         }
         selected {
-            animate {
+            // TODO b/513514362 Animations are currently broken here.
+            //animate {
                 background(colors.brand)
-                contentColor(colors.textSecondary)
+                contentColor(colors.brandLight)
                 border(2.dp, colors.brand)
                 dropShadow(Shadow(color = colors.brand, radius = 6.dp, offset = DpOffset(0.dp, 2.dp)))
                 innerShadow(Shadow(color = colors.brand, offset = DpOffset((-6).dp, (-8).dp), radius = 8.dp))
-            }
+            //}
         }
     }
     val defaultTextStyle: Style = Style {
@@ -256,7 +257,7 @@ object JetsnackStyles {
     }
     val baseSnackCardStyle: Style = Style {
         textAlign(TextAlign.Center)
-
+        width(170.dp)
         hovered {
             animate {
                 scale(1.05f)
@@ -273,14 +274,7 @@ object JetsnackStyles {
             }
         }
     }
-    val responsiveSnackCardStyle: Style = baseSnackCardStyle then Style {
-        width(170.dp)
-
-        if (mediaQuery { windowWidth > 500.dp }) {
-            width(200.dp)
-        }
-    }
-    val highlightGlowCardStyle: Style = responsiveSnackCardStyle then Style {
+    val highlightGlowCardStyle: Style = baseSnackCardStyle then Style {
         background(colors.brandLight)
         border(0.dp, colors.brandLight)
         hovered {
@@ -305,7 +299,7 @@ object JetsnackStyles {
             background(colors.uiFloated.copy(alpha = 0.5f))
         }
     }
-    val plainCardStyle: Style = responsiveSnackCardStyle then Style {
+    val plainCardStyle: Style = baseSnackCardStyle then Style {
         background(colors.cardHighlightBackground)
         clip(true)
         border(1.dp, colors.cardHighlightBorder)

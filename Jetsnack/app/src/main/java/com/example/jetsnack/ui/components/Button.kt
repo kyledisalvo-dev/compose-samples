@@ -81,7 +81,6 @@ fun Button(
     }
     Row(
         modifier = modifier
-            .padding(8.dp)
             .semantics(
                 properties = {
                     role = Role.Button
