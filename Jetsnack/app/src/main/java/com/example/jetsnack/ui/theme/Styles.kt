@@ -117,7 +117,7 @@ object JetsnackStyles {
                     Shadow(
                         color = colors.brand,
                         offset = DpOffset(x = 0.dp, y = 2.dp),
-                        radius = 6.dp,
+                        radius = 2.dp,
                     ),
                 )
                 innerShadow(
