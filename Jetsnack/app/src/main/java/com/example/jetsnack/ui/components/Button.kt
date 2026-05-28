@@ -103,7 +103,7 @@ fun Button(
 @Composable
 private fun ButtonMobilePreview() {
     JetsnackTheme {
-        Box(modifier = Modifier.padding(32.dp)) {
+        Box(modifier = Modifier.padding(8.dp)) {
             UiMediaScopeWrapper(keyboardKind = UiMediaScope.KeyboardKind.Virtual, UiMediaScope.PointerPrecision.Blunt) {
                 var loadingState by remember {
                     mutableStateOf(LoadingState.Loaded)
@@ -125,7 +125,7 @@ private fun ButtonMobilePreview() {
                     enabled = enabled,
                     loadingState = loadingState,
                     style = {
-                        width(130.dp)
+                        width(170.dp)
                     },
                 ) {
 

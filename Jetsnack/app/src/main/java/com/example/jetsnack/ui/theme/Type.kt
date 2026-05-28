@@ -58,6 +58,12 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         lineHeight = 59.sp,
     ),
+    headlineLarge = TextStyle(
+        fontFamily = instrumentSansFontFamily,
+        fontSize = 32.sp,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 40.sp,
+    ),
     headlineMedium = TextStyle(
         fontFamily = instrumentSansFontFamily,
         fontSize = 26.sp,

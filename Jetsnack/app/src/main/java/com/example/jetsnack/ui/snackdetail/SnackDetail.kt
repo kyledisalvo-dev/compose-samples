@@ -258,7 +258,7 @@ private fun Body(related: List<SnackCollection>, scroll: ScrollState) {
                         Text(
                             text = stringResource(R.string.detail_header),
                             style = {
-                                textStyle(typography.headlineMedium)
+                                textStyle(typography.headlineLarge)
                                 contentColor(colors.textHelp)
                                 contentPaddingHorizontal(24.dp)
                             },
