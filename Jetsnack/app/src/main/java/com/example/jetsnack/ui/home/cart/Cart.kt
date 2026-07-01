@@ -62,15 +62,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalMediaQueryApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -504,22 +508,44 @@ private fun CheckoutBar(modifier: Modifier = Modifier) {
     ) {
 
         JetsnackDivider()
-        Row {
-            Spacer(Modifier.weight(1f))
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = { /* todo */ },
+                style = {
+                    shape(RoundedCornerShape(4.dp))
+                    background(colors.brandSecondary)
+                    dropShadow(Shadow(color = Color.Transparent, offset = DpOffset(0.dp, 0.dp), radius = 0.dp))
+                    innerShadow(Shadow(color = Color.Transparent, offset = DpOffset(0.dp, 0.dp), radius = 0.dp))
+                    contentColor(colors.textPrimary)
+                },
+                modifier = Modifier.weight(1f).widthIn(max = 200.dp),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.cart_pay),
+                    modifier = Modifier.fillMaxWidth(),
+                    style = {
+                        textAlign(TextAlign.Center)
+                        fontWeight(FontWeight.SemiBold)
+                    },
+                    maxLines = 1,
+                )
+            }
             Button(
                 onClick = { /* todo */ },
                 style = {
                     shape(RoundedCornerShape(4.dp))
                 },
-                modifier = Modifier
-                    .widthIn(max = 200.dp)
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                modifier = Modifier.weight(1f).widthIn(max = 200.dp),
             ) {
                 Text(
                     text = stringResource(id = R.string.cart_checkout),
                     modifier = Modifier.fillMaxWidth(),
                     style = {
-                        textAlign(TextAlign.Left)
+                        textAlign(TextAlign.Center)
+                        fontWeight(FontWeight.SemiBold)
                     },
                     maxLines = 1,
                 )
