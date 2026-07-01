@@ -6,7 +6,7 @@ androidx-activity-compose = "1.13.0"
 androidx-appcompat = "1.7.1"
 androidx-compose-bom = "2026.04.01"
 androidx-core-splashscreen = "1.2.0"
-androidx-corektx = "1.19.0-SNAPSHOT"
+androidx-corektx = "1.19.0"
 androidx-glance = "1.2.0-rc01"
 androidx-lifecycle = "2.8.2"
 androidx-lifecycle-compose = "2.10.0"
@@ -67,7 +67,7 @@ androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-compose-animation = { module = "androidx.compose.animation:animation" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
-androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version = "1.12.0-SNAPSHOT" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version = "1.12.0-beta01" }
 androidx-compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version = "1.5.0-alpha15" }
 androidx-compose-material3-adaptive = { module = "androidx.compose.material3.adaptive:adaptive" }
