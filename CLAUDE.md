@@ -26,4 +26,3 @@ git push
   own Android Studio project — open the sample folder, never the repo root.
 - Keep personal notes in FORK-NOTES.md / CLAUDE.md, not README.md, to avoid
   merge conflicts with upstream.
-- The user is learning git/GitHub and Android — explain steps simply.
